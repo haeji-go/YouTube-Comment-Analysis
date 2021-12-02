@@ -41,7 +41,7 @@ YouTube 댓글분석 및 댓글기반의 채널추천 서비스
       <th> app.py</th>
       <th> URL </th>
       <th> TEMPLATES </th>
-      <th>  </th>
+      <th> 설명 </th>
      </tr>
   </thead>
   <tbody>
