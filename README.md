@@ -90,6 +90,8 @@ YouTube 댓글분석 및 댓글기반의 채널추천 서비스
   </tbody>
  </table>
  
+(주의) 'localhost/'에서 순서대로 진행하세요! (url로 그냥 접근하는 경우, 오류가 발생할 수 있습니다.)
+
 ## 4. 사용된 기술
 - python (Flask Framework, YoutubeAPI: googleapiclient.discovery)
 - html
