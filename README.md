@@ -98,3 +98,4 @@ YouTube 댓글분석 및 댓글기반의 채널추천 서비스
 - javascript (d3.js)
 
 ## 5. 시연 영상
+[![유튜브댓글분석 및 채널추천서비스 시연영상](http://img.youtube.com/vi/tvAdpPtTY8Y/0.jpg)](https://youtu.be/tvAdpPtTY8Y?t=0s) 
