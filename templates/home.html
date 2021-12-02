@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--마크업 안에 아이콘을 삽입하기 위해 link 코드를 추가-->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
+    <link rel="shortcut icon" href="https://www.youtube.com/s/desktop/c051e6b4/img/favicon.ico" type="image/x-icon">
+    <title>Youtube 댓글분석 서비스</title>
+    <style>
+        *:focus { outline:none; }
+    </style>
+    <style type="text/css">
+        html, body{
+            margin:0 auto;
+            transform: translate(0,0);
+            width:1520px;
+            height:690px;
+        }
+
+        #keyword_input{
+            padding:25px; font-size:20px; border-radius:25px; background-color:#FFD9D9; vertical-align:middle; color:black; width:500px; border-color:white; margin:auto;
+        }
+        .banner_container{
+            display:flex;
+            margin-top:4%;
+            height:63%;
+            width:100%;
+            position:relative;
+        }
+
+        #service-info{
+            display:block;
+            margin:10px;
+            padding:6px;
+            opacity:0.8;
+            font-size:15px; border:2px solid #FFD9D9; 
+            background-color: #FEF4F6;; color:black; 
+            margin:auto;text-align: center; 
+        }
+
+      h2{
+          position:absolute;
+          top:58%;
+          right:50%;
+          transform: translateX(40%);
+      }
+      .info-btn{
+          margin-right:7%;
+      }
+    </style>
+
+    <script language="javascript">
+        function showPopup(){
+            window.open("service-info.html","service_info", "width=1200, height=700, left=100, top=50");
+        }
+    </script>
+
+</head>
+
+<body>
+    <div class = 'banner_container'>
+        <img src="{{ url_for('static', filename='image/home_banner.png')}}", style="margin:auto;"/>
+
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for m in messages %}
+                
+                    <h2 style="text-align:center; color:red; "><i class="fas fa-exclamation-triangle fas-5x"></i>{{ m }}<i class="fas fa-exclamation-triangle fas-5x"></i></h2>
+                {% endfor %}
+            {% endif %}
+    {% endwith %}
+
+    <form action="/loading" method = "post">
+        <div class="input_box" style="margin: 40px auto; width:700px; display:flex;">
+  
+            <input type="text" name = 'keyword' id='keyword_input' placeholder="영상 url 입력.. ">
+            <button class="icon" style="color:#FF0000; vertical-align:middle;box-shadow:none;background-color:white; border-radius:10px;margin:auto;border:none"><i class="fa fa-search fa-5x"></i></button>
+        </div>
+
+        <div class="info-btn">
+            <input id="service-info" type="button" value="서비스 소개" onclick="showPopup();"/>
+        </div>
+    </form>
+    
+</body>
+
+</html>

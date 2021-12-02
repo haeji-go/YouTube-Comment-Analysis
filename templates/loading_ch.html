@@ -1,0 +1,130 @@
+<html>
+    <head>
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">    
+        <script src="https://d3js.org/d3.v4.js"></script>
+        <link rel="shortcut icon" href="https://www.youtube.com/s/desktop/c051e6b4/img/favicon.ico" type="image/x-icon">
+        <title>Youtube 채널추천 서비스</title>
+
+        <style>
+            .loader {  z-index: 1; width: 130px; height: 130px; margin:auto; border: 35px solid #FEF7F7;  border-radius: 50%; border-top: 35px solid #FFB9B9; -webkit-animation: spin 2s linear infinite; animation: spin 2s linear infinite; } 
+        
+            @-webkit-keyframes spin { 0% { -webkit-transform: rotate(0deg); } 100% { -webkit-transform: rotate(360deg); } } 
+    
+            @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            html{
+                width:100%;
+                height:100%;
+                display:flex;
+            }body{
+                margin:auto;
+                width:1536px;
+                height:753.6px;
+            }
+            .title_container{
+                display:flex;
+                height:10%;
+                position:relative;
+            }
+            .contents_container{
+                display:flex;
+                height:90%;
+                background-color: #FEF4F6;
+            }
+            .contents{
+                display:flex;
+                position:relative;
+                flex-direction: column;
+                width:80%;
+                height:85%;
+                background-color: white;
+                border:1px solid red;
+                border-radius:40px;
+                margin:auto;
+                text-align: center;
+            }
+            .go_home{
+                position:absolute;
+                left:90%;
+            }
+            svg{
+                margin:6% auto;
+            }
+            rect{
+                background-color: #FEF4F6;
+            }
+            #sub-text{
+                position: absolute; 
+                display:inline-block;
+                font-weight: bolder;
+                font-size:30px;
+                right:50%;
+                transform: translateX(50%);
+                top:65%;
+
+            }
+        </style>
+    </head>
+    <body>
+        <div class="title_container">
+            <img id="title" src="{{ url_for('static', filename='image/title_loading_ch.png')}}" style="margin:auto; height:100%;"/>
+            <form action="/" method="get">
+                <div class="go_home">
+                    <button class="home_button" style="color:#f7c1cc; border-color:#f7c1cc; border-radius:10px; width:80px; height:50px; box-shadow:none;background-color:white; margin-right:30px; margin-left:30px; margin-top:15px;"><i class="fas fa-home fa-3x"></i></button>
+                </div>
+            </form>
+        </div>
+
+        <div class="contents_container">
+
+            <div class="contents">
+                <div class='loader'>
+
+                </div>
+
+                <div id="sub-text">
+                    {{prg_text}}
+                </div>
+
+                <div id="stepbar">
+                    <svg height="60" width="902">
+                        
+                        <rect id="block1" x="0" y="0" rx="10" ry="8" width="300" height="60" fill="#FEF4F6"></rect>
+                        <rect id="block2" x="301" y="0" rx="8" ry="8" width="300" height="60" fill="#FEF4F6"></rect>
+                        <rect id="block3" x="602" y="0" rx="8" ry="8" width="300" height="60" fill="#FEF4F6"></rect>
+                        <rect x="0" y="0" rx="10" ry="10" width="902" height="60" style="fill-opacity: 0; stroke:#FFB9B9; stroke-width:1px; z-index: index 1;" ></rect>
+
+                    </svg>
+                </div>
+
+            </div>
+        </div>
+        
+        <script>
+            url_value={{url_value}} -1;
+
+            for(var i = 1; i < url_value+1 ; i++){
+                var rct_id='#block'+String(i)
+                d3.select(rct_id).style("fill", "#FFB9B9");
+            }
+
+            var _showPage = function() { var loader = $("div.loader"); var container = $("div.container"); loader.css("display","none"); container.css("display","block"); };
+
+            var sendPost = function(){
+                var form = document.createElement("form");
+                var url_value = {{ url_value }};
+                var url = 'chRecmd_step'+String(url_value)
+                if (url_value == 4){
+                    url="Channel-Recommendation"
+                } 
+                form.setAttribute('method', 'post');
+                form.setAttribute('action', url);
+                document.charset="utf-8";
+                document.body.appendChild(form);
+                form.submit();
+            }
+
+            sendPost();
+        </script>
+    </body>
+</html>

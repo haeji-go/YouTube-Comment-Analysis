@@ -1,0 +1,181 @@
+<head>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
+
+    <link rel="shortcut icon" href="https://www.youtube.com/s/desktop/c051e6b4/img/favicon.ico" type="image/x-icon">
+    <title>Youtube 댓글분석 서비스 소개</title>
+
+    <style>
+        body{
+            margin-top:15px;
+            margin-left: 12%;
+        }
+        #subTitle{
+            font-weight: bold;
+
+        }
+        #keywordTitle{
+            font-weight: bold;
+            background-color: #ffeded;
+
+        }
+        input{
+            display:block;
+            margin:2px;
+            width:45px;
+            height:35px;
+            border:1px solid  #FFD9D9;;
+            background-color:#FEF4F6;
+            color:black;
+            padding:5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="title">
+    <h2> <i class="fab fa-youtube" style="color:red"></i> <span  style="color: red">Youtube</span> 댓글분석 및 채널추천 서비스</h2>
+    </div>
+
+    <div id="serviceInfo">
+        <h3>
+            <span style="font-weight:bold; background-color: #FFD9D9;">
+                [서비스 소개]
+            </span>
+        </h3>
+
+        <div>
+            <p>
+                <span style="font-weight:bold;">유튜브 댓글</span>을 <span style="font-weight:bold;">실시간으로 수집</span>하여 <span style="font-weight:bold;">분석</span>해주는 서비스입니다. <br>
+
+                유튜브 영상 url입력만으로 한 눈에 보기 힘든 유튜브 댓글의 분석된 결과를 확인해보세요!&#128522; <br>
+                로그인없이 새로운 댓글 작성만으로 새로운 채널을 추천받아보세요! &#128522; <br>
+                <br>
+                해당 서비스는 아래와 같이 크게 두 부분으로 이루어져있습니다. <br>
+            </p>
+
+            <div id="servicePart">
+                <h4 id = "subTitle">
+                    (1) 유튜브 댓글 분석 
+                </h4>
+                <div>
+                    <p>
+                        <blockquote>
+                            <span id="keywordTitle"> &#10004; 키워드 클러스터링</span><br>
+                            전체 댓글들을 3개의 주제(토픽)으로 분류하여 토픽의 분포와 해당 토픽별 단어의 분포를 시각화한 분석기법<br>
+                            <br>
+                            <span id="keywordTitle">&#10004; 감성분석</span><br>
+                            전체 댓글에 대하여 긍정, 부정, 중립을 판별하여 그 비율을 도넛차트를 이용하여 시각화<br>
+                            <br>
+                            <span id="keywordTitle">&#10004; 워드클라우드</span><br>
+                            전체 댓글의 키워드를 직관적으로 파악할 수 있도록 비중이 높은 단어를 글자크기와 색을 통해 강조하는 시각화<br>
+                        </blockquote>
+                        
+                    </p>
+                    <p>
+                        <blockquote>
+                            <span style="color:gray;">
+                                <span style="font-weight:bold">(Tip)</span> 도넛 차트의 각 긍정, 부정, 중립을 누르면 해당 감성별 워드클라우드를 확인할 수 있습니다. &#128522; <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 예. 긍정 도넛 조각을 클릭 &#129046;긍정 판단에 영향을 준 단어들로 구성된 워드클라우드 확인가능 <br>
+                                <br>
+                            </span>
+                        </blockquote>
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div id="servicePart">
+                <h4  id = "subTitle">
+                    (2) 댓글 분석 기반의 채널 추천
+                </h4>
+                <div>
+                    <p>
+                        <blockquote>
+               
+                            분석한 영상에 대해 새로운 댓글을 입력하면, 기존 댓글과 새로운 댓글을 분석하여 이웃을 선정하고, <br>
+                            해당 이웃의 구독정보를 수집하여 새로운 채널을 추천해드려요!<br>
+                            <span style="color:gray;">
+                                <span style="color:gray"><span style="font-weight:bold">(Tip)</span> 댓글이 적은 경우, 기존 댓글과 다른 양상의 댓글을 입력할 경우 채널 추천 성능이 제대로 안 나올 수 있어요!&#128549; <br></span>
+                                <br>
+                            </span>
+
+                        </blockquote>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        
+    </div>
+
+    <p>
+        <br>
+
+    </p>
+    <div id="serviceStep">
+        <h3>
+            <span style="font-weight:bold; background-color: #FFD9D9;">
+                [서비스 이용]
+            </span>
+            
+        </h3>
+        <div id="servicePart">
+            <h4 id = "subTitle">
+                (1) 유튜브 댓글 분석 
+            </h4>
+            <div>
+                <p>
+                    <blockquote>
+                        <span id="keywordTitle">[step1]</span> 유튜브 영상의 url 복사 <span style="color:darkblue"><a href="https://www.youtube.com/" target="_blank">(youtube로 이동하기)</a></span> <br>
+                        <span id="keywordTitle">[step2]</span> 복사한 url을 입력 후, 엔터 <br>
+                        <span id="keywordTitle">[step3]</span> 분석 결과 확인<br>
+                    </blockquote>
+                </p>
+
+                <p>
+                    <blockquote>
+                    <span style="color:gray;">
+                        <span style="font-weight:bold">(Tip)</span> <span style="background-color:#f0f0f0;">step2&#10140;step3</span> : 댓글 수집 &#129046; 텍스트 전처리 &#129046; 텍스트 분석 &#129046; 분석결과시각화 <br>
+                        - 진행 과정을 확인할 수 있어요! &#128522; <br>
+                        - 여러 과정이 진행되다 보니, 댓글이 많을수록 시간이 더 소요됩니다!&#128549;<br>
+
+                        <br>
+                    </span>    
+                    </blockquote>
+                </p>
+            </div>
+        </div>
+        <div id="servicePart">
+            <h4 id = "subTitle">
+                (2) 댓글 분석 기반의 채널 추천 
+            </h4>
+            <div>
+                <p>
+                    <blockquote>
+                    <span id="keywordTitle">[step1]</span> 분석 페이지에서 새로운 댓글 입력 후, 엔터 <br>
+                    <span id="keywordTitle">[step2]</span> 댓글 분석 기반으로 추천된 채널 확인 <br>
+                    </blockquote>
+                </p>
+                <p>
+                    <blockquote>
+                    <span style="color:gray;">
+                        <span style="font-weight:bold">(Tip)</span> <span style="background-color: #f0f0f0;">step1&#10140;step2</span> : 새로운 댓글과 기존 댓글간의 유사도 계산 &#129046; 기존 댓글 작성자들의 구독 정보 수집 &#129046; 추천 알고리즘 <br>
+                        - 위의 과정들이 진행되므로 시간이 소요됩니다!&#128549; <br>
+                        <br>
+                    </span>
+                    </blockquote>
+                </p>
+
+            </div>
+        </div>
+        
+    </div>
+    <div>
+        <br>
+        <input style="margin:auto; "type="button" value="닫기" onClick='window.close();'>
+        <br>
+
+
+    </div>
+</body>
