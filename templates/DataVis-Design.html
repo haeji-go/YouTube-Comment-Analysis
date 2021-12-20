@@ -11,6 +11,7 @@
     * https://github.com/cpsievert/LDAvis
     * Copyright 2013, AT&T Intellectual Property
     * MIT Licence
+
 -->
 
 <head>
@@ -1365,11 +1366,18 @@
                 </div>
                 
             </div>
+
+            <div style="position:absolute; top:69.85%; left:48.9%;">
+                    
+                <p style="font-size:small; text-align:center;">'긍정', '부정'<br>클릭해보세요!</p>
+                
+            </div>
+
         </div>
     </div>
     <script type="text/javascript">
-        
-       
+            
+        // 도넛차트 정의 
         var pieChart = function(data_wc_pst, data_wc_ngt, data_wc_nut, data_wc){
             var width =260
             var height =260
@@ -1389,9 +1397,7 @@
             var label_seg=["중립","긍정", "부정" ];
 
             var ratio_data= { "중립" : ratio_neutral, "긍정" : ratio_positive, "부정":ratio_negative};
-            
 
-                
             var color = d3.scaleOrdinal().domain(ratio_data).range(["#BFDB67","#FAEA72", "#FF8B8E"]);
             
             var pie = d3.pie().value(function(d) {return d.value; })
@@ -1403,7 +1409,7 @@
                 .data(data_ready)
                 .enter();
                 
-                
+            var mouse_out_flag = false;    
             elmt.append('path')
                 .attr('d',arc)
                 .attr('fill', function(d){ return(color(d.data.key)) })
@@ -1413,22 +1419,24 @@
                 .on('click', function(d){
                     d3.select("#wc").remove();
                     console.log(d.data.key);
+                    
                     if(d.data.key == '긍정'){
-                        //var data_wc_pst =  {{ dict_wc_pst | tojson }};
                         pos_colors=["#f9e763", "#f8e452", "#f7df32", "#edd109" , '#ccb408','#8b7a05','#494103','#181501']
                         wordCloud(data_wc_pst,pos_colors);
+                        mouse_out_flag = true;
                         return;
                     }
                     else{
                         if(d.data.key == '부정'){
-                            neg_colors=["#fcaa8e","#fc8a6b","#f9694c","#ef4533","#d92723","#bb151a","#970b13","#67000d"];
-                            //var data_wc_ngt =  {{ dict_wc_ngt | tojson }};
+                            neg_colors=["#ffc9c9","#ffa8a8","#ff8787","#ff6b6b","#fa5252","#f03e3e","#e03131","#c92a2a"];
                             wordCloud(data_wc_ngt,neg_colors);
+                            mouse_out_flag = true;
                             return;
                         }
                         else{
                             nut_colors=["#bfdb67", "#aed13e", "#91b12b", "#7b9624" , '#708821','#596d1a','#384410','#161b06']
                             wordCloud(data_wc_nut,nut_colors);
+                            mouse_out_flag = true;
                         }
 
                     }
@@ -1436,12 +1444,15 @@
     
                 })
                 .on('mouseout', function(){
-                    colors=["#bbb", "#919191", "#666", "#4d4d4d" , '#3c3c3c','#2b2b2b','#1a1a1a','#000']
-                    d3.select("#wc").remove();
-                    wordCloud(data_wc, colors);
-    
+                    if (mouse_out_flag == true){
+                        colors=["#bbb", "#919191", "#666", "#4d4d4d" , '#3c3c3c','#2b2b2b','#1a1a1a','#000']
+                        d3.select("#wc").remove();
+                        wordCloud(data_wc, colors);
+                        mouse_out_flag = false;
+                    }                 
+
                 });
-                
+
 
             elmt.append('text')
             .attr("transform", function(d) {
@@ -1455,10 +1466,10 @@
  
         };
 
+        // LDA 정의
         var LDA = function(){
             var ldavis_data = {{ ldavis_json | tojson }};
             
-            //d3.select("#ldavis").attr("transform", "translate(400,70)");
             function LDAvis_load_lib(url, callback){
                 var s = document.createElement('script');
                 s.src = url;
@@ -1473,11 +1484,9 @@
       
             };
     
-            
+        // 워드클라우드 정의    
         var wordCloud = function(data_wc, colors){
             document.cookie = "crossCookie=bar; SameSite=None; Secure";
-
-            //var colors = ["#fcaa8e","#fc8a6b","#f9694c","#ef4533","#d92723","#bb151a","#970b13","#67000d"];
 
             // set the dimensions and margins of the graph
             var width = 500,
@@ -1489,8 +1498,6 @@
                 .attr("height", height)
                 .attr("transform", "translate(" + 7 + "," +7 + ")");
                 
-                //.attr("background-color", '#000000');
-
             var sizeScale = d3.scaleLinear()
             .domain([0, d3.max(data_wc, d => d.count)])
             .range([20, 105]).clamp(true);
@@ -1527,8 +1534,6 @@
     }
 
 
-
-    // List of words
     var data_wc =  {{ dict_wc | tojson }};
     var data_wc_pst =  {{ dict_wc_pst | tojson }};
     var data_wc_ngt =  {{ dict_wc_ngt | tojson }};
@@ -1536,10 +1541,13 @@
     
 
     colors=["#bbb", "#919191", "#666", "#4d4d4d" , '#3c3c3c','#2b2b2b','#1a1a1a','#000']
+
+    // 데이터 시각화 그래프 생성
     wordCloud(data_wc, colors);
     pieChart(data_wc_pst, data_wc_ngt, data_wc_nut, data_wc);
     LDA();
 
+    // 용어에 대한 설명 추가 (tooltip 이용)
     d3.select("#question-lda").on("mouseover", function(){
         d3.select(this).attr("fill", "gray");
         var xPosition = parseFloat(d3.select(this).attr('x'))+30;
