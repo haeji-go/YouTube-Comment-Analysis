@@ -1,6 +1,6 @@
 # YouTube-Comment-Analysis
 YouTube 댓글분석 및 댓글기반의 채널추천 서비스
-
+* 서비스 실행 방법 : https://www.notion.so/YouTube-524d95bed83d4ffa89f233899c348a62
 ## 1. 서비스 소개
 유튜브 댓글을 실시간으로 수집하여 분석해주는 서비스입니다. 
 - 유튜브 영상 url입력만으로 한 눈에 보기 힘든 유튜브 댓글의 분석된 결과를 확인할 수 있습니다.
