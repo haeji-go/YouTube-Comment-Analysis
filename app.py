@@ -12,7 +12,7 @@ from LoadDict import load_dictionary
 from YoutubeInfo_Crawling import ch_img, ytb_information
 from RcmdChannel import feature_vector
 import re
-
+from datetime import datetime
 app = Flask(__name__)
 app.run(debug=True)
 
@@ -43,7 +43,8 @@ img_name_list=[]
 ch_name_list=[]
 ch_url_list=[]
 stopwords , pos, neg = load_dictionary()
-
+rating_value=0
+rating_df = pd.DataFrame()
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -104,7 +105,6 @@ def loading_step4():
 def loading_step5():
     global lda_json_name, json_data
     lda_json_name= LDA(df_prc, sub_title="")
-    print(lda_json_name)
     if lda_json_name !='':
         time.sleep(5)
         with open(lda_json_name, 'r') as f:
@@ -189,13 +189,28 @@ def chRecmd_step3():
 
 @app.route('/Channel-Recommendation', methods=["POST"])
 def chRecmd_step4():
-    global newcmt, ch_id_list, img_name_list, ch_name_list, ch_url_list
+    global newcmt, ch_id_list, img_name_list, ch_name_list, ch_url_list, rating_value, rating_df
     img_name_list, ch_name_list, ch_url_list =ch_img(ch_id_list)
+    rating_df=pd.read_csv('data/ratings.csv', encoding='utf-8-sig')
+    
+    rating_value=round(rating_df['Ratings'].sum() / rating_df.shape[0] , 1)
+    
     if len(ch_name_list) <5 :
         index = len(ch_name_list) 
         for i in range(index, 5, 1):
             img_name_list.append("image/no_recmd_ch.png")
             ch_name_list.append("추천채널 없음")
             ch_url_list.append("")
-    return render_template('chRcmdResult.html', img_name_list=img_name_list, ch_name_list= ch_name_list, ch_url_list=ch_url_list)
+    return render_template('chRcmdResult.html', img_name_list=img_name_list, ch_name_list= ch_name_list, ch_url_list=ch_url_list, rating_value=rating_value)
 
+# 채널추천 평가 완료한 경우
+@app.route('/Channel-Recommendation-rating-submit', methods=["POST"])
+def rating_submit():
+    global rating_value, newcmt, value, rating_df, ch_id_list, img_name_list, ch_name_list, ch_url_list, rating_value, rating_df
+    new_rating = int(request.form['rating_data'])
+    new_data={'Datetime':datetime.today(),'YoutubeID':value, "Comments":newcmt, "Ratings":new_rating} #새로 평가된 점수 및 정보 저장
+    rating_df=rating_df.append(new_data, ignore_index=True)
+    rating_df.to_csv('data/ratings.csv', index=False, encoding='utf-8-sig')
+    rating_value=round(rating_df['Ratings'].sum() / rating_df.shape[0] , 1) # 평균평점 업데이트
+    return render_template('chRcmdResult_submit.html', img_name_list=img_name_list, ch_name_list= ch_name_list, ch_url_list=ch_url_list, rating_value=rating_value)
+    
