@@ -6,7 +6,9 @@
 
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
-    
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://d3js.org/d3.v4.js"></script>
+
     <style>
         html{
             display: flex;
@@ -20,6 +22,7 @@
             display:flex;
             flex-direction: column;
             background-color: #FEF4F6;
+            
         }
         #title-container{
             display:flex;
@@ -75,31 +78,122 @@
             height:100%;
             margin:auto;
         }
-        #info-title{
-            height:8%;
-            margin-top:6px;
-            text-align: center;            
+        
+        #rating_conatiner{
+            position:absolute;
+            margin-left:90%;
         }
-        blockquote{
-            margin-top:0;
-            margin-bottom:0;
-            margin-left:18px;
-            color:#9e9d9d;
+        .star-ratings {
+            color: #aaa9a9; 
+            position: relative;
+            unicode-bidi: bidi-override;
+            width: max-content;
+            font-size:40px;
+            -webkit-text-fill-color: transparent; /* Will override color (regardless of order) */
+            -webkit-text-stroke-width: 1.3px;
+            -webkit-text-stroke-color: #2b2a29;
+
+          }
+           
+        .star-ratings-fill {
+        color: #fff58c;
+        padding: 0;
+        position: absolute;
+        z-index: 2;
+        display: flex;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+        -webkit-text-fill-color: gold;
+        font-size:40px;
+
         }
-        p{
-            margin: 2px;
-            color:gray;
+        
+        .star-ratings-base {
+        z-index: 1;
+        padding: 0;
+        font-size:40px;
+
         }
-        #info-text{
-            color:gray;
-            width:28%;
-            height:20%;
-            margin-left:auto;
-            margin-right:auto;
+
+        .star-rating {
+
+        display: flex;
+        flex-direction: row-reverse;
+        font-size: 55px;
+        line-height: 2.5rem;
+        justify-content: space-around;
+        padding: 0 0.2em;
+        text-align: center;
+        width: 5em;
         }
+        
+        .star-rating input {
+        display: none;
+        }
+        
+        .star-rating label {
+        -webkit-text-fill-color: transparent; /* Will override color (regardless of order) */
+        -webkit-text-stroke-width: 2.3px;
+        -webkit-text-stroke-color: #2b2a29;
+        cursor: pointer;
+
+        }
+        
+        .star-rating :checked ~ label {
+        -webkit-text-fill-color: gold;
+        }
+        
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+        -webkit-text-fill-color: #fff58c;
+        }
+        input#submit{
+        display:block;
+        margin:auto;
+        width:80px;
+        height:30px;
+        border:1px solid  #FFD9D9;;
+        background-color:white;
+        color:black;
+        padding:5px;
+        }
+
+
+
     </style>
+
+    <script language="javascript">
+        function clickSubmit(){
+           var star_name = $("input[name='rating']:checked").attr('id');
+           if (star_name == undefined){
+                alert('1점~5점 사이의 점수를 선택해주세요\n(별 하나당 1점씩, 별을 클릭해주세요!)')
+           }
+           else{
+
+            var form = document.createElement("form");
+            var url = 'Channel-Recommendation-rating-submit'
+            form.setAttribute('method', 'post');
+            form.setAttribute('action', url);
+            
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute('type', 'hidden');
+            hiddenField.setAttribute('name', 'rating_data');
+            hiddenField.setAttribute('value', star_name[0]);
+            form.appendChild(hiddenField);
+            
+            document.body.appendChild(form);
+            form.submit();
+
+
+            }
+        }
+    </script>
+
+    
 </head>
 <body>
+
     <div id="title-container" >
         <img src="{{ url_for('static', filename='image/title_result_ch.png')}}" style="margin:auto; height:100%;"/>
         <form action="/" method="get">
@@ -112,7 +206,6 @@
         <h1>&nbsp;&nbsp;&nbsp;&nbsp; #댓글을 기반으로 추천된 채널 <span style="color:red; font-weight:bolder">TOP5</span></h1>
     </div>
     <div class = "container">
-
         <div id="ch_container">
 
             <div id="ch">
@@ -175,39 +268,93 @@
         
     </div>
 
-    <a href="javascript:doDisplay();">
-    <div id="info-title">
-        <p style="margin-top:27px;">
-            <span style="font-weight:bold;"><i class="fas fa-check"></i> 참고해주세요 <i class="fas fa-check"></i></span><br>
-        </p>
-    </div>
-    </a>
-    <div id="info-text" style="display: none;">
-        <p>
-        &#10003; 채널추천의 성능이 좋지 않은 경우는 다음과 같습니다.<br>
-        <blockquote>
-            &#183; 전체 또는 한국어 댓글이 적은 경우 <br>
-            &#183; 구독정보가 공개된 댓글작성자가 적은 경우 <br>
-            &#183; 기존 댓글들과 다른 유형의 댓글을 작성하는 경우  
-        </blockquote>
-        </p>
 
-        <p>&#10003; 댓글 수가 많은 영상으로 다시 선택해주세요!</p> 
-        <p>&#10003; 5개의 채널이 모두 추천되지 않을 수도 있습니다.</p>
-    </div>
+    <div id="rating_container" style="margin-top:1%; display:flex; ">
+        <!--채널 추천 만족도 평점-->
+        <div id="avg_rating" style="margin-left:4%; width:30%;">
+            <div>
+                <p style="font-size:25px; font-weight:bolder; margin-bottom:1%;">#채널추천 만족도 </p>
+            </div>
+            
+            <div style="width:270px; height:55px; background-color:white; border-radius:15px; margin-bottom:5px;">
+
+                <div class="star-ratings"  style="margin-left:8px; ">
+                
+                    <div class="star-ratings-fill">
+                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                    </div>
+                    <div class="star-ratings-base" >
+                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                    </div>
+                    <div style='position:absolute; right:-50px; bottom:5; font-size:20px; color:gray '>
+                        <span>({{rating_value}})</span>
+                    </div>
+                  
+                    <script>
+                        var value={{rating_value}};
+                        var w = (value*20).toString();
+                        document.getElementsByClassName("star-ratings-fill")[0].style.width= w+"%";
+            
+                    </script>
+                    
+                </div>
+            </div>
+           
+
+            <a href="javascript:doDisplay();"style="margin-top:10px; width:270px; " >
+                <p id="click_rating" style="margin-top:25px;  width:270px; text-align:center; ">
+                    나도 평가하기 <i class="fas fa-mouse-pointer"></i>
+                </p>
+            </a>
+
+        </div>
+        
+
+        <!--채널 추천 평가-->
+        <div id="input_rating" style="display:none; margin-right:4%; width:70%; ">
+            <div id="input-container" style="margin:auto">
+
+                <div>
+                    <p style="margin-top:25px; text-align: center; font-weight:bold;font-size:20px;">채널 추천 결과에 대해 평가해주세요! </p>
+                </div>
+                <div class="star-rating space-x-4 mx-auto" style="margin:auto;">
     
-    <script type="text/javascript">
-        var bDisplay=true;
-        function doDisplay(){
-            var con=document.getElementById("info-text");
-            if(con.style.display=="none"){
-                con.style.display='block';
+                        <input type="radio" id="5-stars" name="rating" value="5" v-model="ratings"/>
+                        <label for="5-stars" class="star pr-4">★</label>
+                        <input type="radio" id="4-stars" name="rating" value="4" v-model="ratings"/>
+                        <label for="4-stars" class="star">★</label>
+                        <input type="radio" id="3-stars" name="rating" value="3" v-model="ratings"/>
+                        <label for="3-stars" class="star">★</label>
+                        <input type="radio" id="2-stars" name="rating" value="2" v-model="ratings"/>
+                        <label for="2-stars" class="star">★</label>
+                        <input type="radio" id="1-star" name="rating" value="1" v-model="ratings" />
+                        <label for="1-star" class="star">★</label>
+    
+                </div>
+    
+                <div style="margin-top:30px">
+                    <input id="submit" type="button" value="제출하기" onclick="clickSubmit();"/>
+                </div>
+
+            </div>
+    
+            
+        </div>
+        
+        <script type="text/javascript">
+            var bDisplay=true;
+            function doDisplay(){
+                var con=document.getElementById("input_rating");
+                if(con.style.display=="none"){
+                    con.style.display='block';
+                }
+                else{
+                    con.style.display='none';
+                }
             }
-            else{
-                con.style.display='none';
-            }
-        }
-    </script>
+        </script>
+
+    </div>
 
 </body>
 </html>
