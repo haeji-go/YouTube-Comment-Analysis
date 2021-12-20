@@ -16,5 +16,5 @@ def LDA(df,sub_title='0' ,epochs=10, num_topics=3):
   dictionary, corpus = encoding_make_dic(df)
   lda = gensim.models.ldamodel.LdaModel(corpus, num_topics=num_topics, id2word=dictionary, passes=epochs) #passes(epoch)
   vis =  pyLDAvis.gensim_models.prepare(lda, corpus, dictionary) 
-  pyLDAvis.save_json(vis, './visLDA'+sub_title+'.json')
-  return './visLDA'+sub_title+'.json'
+  pyLDAvis.save_json(vis, './data/visLDA'+sub_title+'.json')
+  return './data/visLDA'+sub_title+'.json'
